@@ -60,6 +60,27 @@ class Database
                 $mysql = $dbConfig['mysql'];
                 $dsn = "mysql:host={$mysql['host']};port={$mysql['port']};dbname={$mysql['dbname']};charset=utf8mb4";
                 self::$connection = new PDO($dsn, $mysql['username'], $mysql['password'], $options);
+            } elseif ($type === 'postgresql') {
+                $pg = $dbConfig['postgresql'];
+                $dsn = "pgsql:host={$pg['host']};port={$pg['port']};dbname={$pg['dbname']}";
+                self::$connection = new PDO($dsn, $pg['username'], $pg['password'], $options);
+            } elseif ($type === 'mssql') {
+                $mssql = $dbConfig['mssql'];
+                $dsn = "sqlsrv:Server={$mssql['host']}";
+                if (!empty($mssql['port'])) {
+                    $dsn .= ",{$mssql['port']}";
+                }
+                $dsn .= ";Database={$mssql['dbname']}";
+
+                if (isset($mssql['trust_cert'])) {
+                    $dsn .= ";TrustServerCertificate=" . ($mssql['trust_cert'] ? '1' : '0');
+                }
+
+                if ($mssql['win_auth']) {
+                    self::$connection = new PDO($dsn, null, null, $options);
+                } else {
+                    self::$connection = new PDO($dsn, $mssql['username'], $mssql['password'], $options);
+                }
             }
         } catch (Exception $e) {
             error_log('Database Connection Error: ' . $e->getMessage());

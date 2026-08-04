@@ -12,6 +12,22 @@ return [
             'dbname' => $_ENV['DB_NAME'] ?? 'speedtest',
             'username' => $_ENV['DB_USER'] ?? '',
             'password' => $_ENV['DB_PASS'] ?? ''
+        ],
+        'postgresql' => [
+            'host' => $_ENV['DB_HOST'] ?? '127.0.0.1',
+            'port' => $_ENV['DB_PORT'] ?? 5432,
+            'dbname' => $_ENV['DB_NAME'] ?? 'speedtest',
+            'username' => $_ENV['DB_USER'] ?? '',
+            'password' => $_ENV['DB_PASS'] ?? ''
+        ],
+        'mssql' => [
+            'host' => $_ENV['DB_HOST'] ?? '127.0.0.1',
+            'port' => $_ENV['DB_PORT'] ?? 1433,
+            'dbname' => $_ENV['DB_NAME'] ?? 'speedtest',
+            'username' => $_ENV['DB_USER'] ?? '',
+            'password' => $_ENV['DB_PASS'] ?? '',
+            'win_auth' => filter_var($_ENV['DB_MSSQL_WINDOWS_AUTH'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            'trust_cert' => filter_var($_ENV['DB_MSSQL_TRUST_CERT'] ?? true, FILTER_VALIDATE_BOOLEAN)
         ]
     ],
     'telemetry' => [
