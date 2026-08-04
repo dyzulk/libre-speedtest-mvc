@@ -3,39 +3,49 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Traits\RequestHelper;
+use App\Services\TelemetryService;
 use App\Models\Telemetry;
+use Exception;
 
 class TelemetryController extends Controller
 {
+    use RequestHelper;
+
+    protected $telemetryService;
+
+    public function __construct()
+    {
+        $this->telemetryService = new TelemetryService();
+    }
+
     /**
      * Store new speedtest telemetry metrics.
      */
     public function store(): void
     {
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
-        $ispinfo = $_POST['ispinfo'] ?? null;
-        $extra = $_POST['extra'] ?? null;
-        $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
-        $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en';
-        
-        $dl = $_POST['dl'] ?? null;
-        $ul = $_POST['ul'] ?? null;
-        $ping = $_POST['ping'] ?? null;
-        $jitter = $_POST['jitter'] ?? null;
-        $log = $_POST['log'] ?? null;
+        $data = [
+            'ip' => $this->getClientIp(),
+            'ispinfo' => $_POST['ispinfo'] ?? null,
+            'extra' => $_POST['extra'] ?? null,
+            'ua' => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown',
+            'lang' => $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en',
+            'dl' => $_POST['dl'] ?? null,
+            'ul' => $_POST['ul'] ?? null,
+            'ping' => $_POST['ping'] ?? null,
+            'jitter' => $_POST['jitter'] ?? null,
+            'log' => $_POST['log'] ?? null,
+        ];
 
-        $id = Telemetry::insert($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log);
-        if ($id === false) {
+        try {
+            $id = $this->telemetryService->saveResult($data);
+            $this->setNoCacheHeaders();
+            echo 'id ' . $id;
+        } catch (Exception $e) {
             http_response_code(500);
-            echo 'Failed to store results';
-            exit();
+            echo $e->getMessage();
         }
-
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, s-maxage=0');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-
-        echo 'id ' . $id;
+        exit();
     }
 
     /**
