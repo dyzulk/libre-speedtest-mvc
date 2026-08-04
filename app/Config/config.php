@@ -30,6 +30,12 @@ return [
             'trust_cert' => filter_var($_ENV['DB_MSSQL_TRUST_CERT'] ?? true, FILTER_VALIDATE_BOOLEAN)
         ]
     ],
+    'app' => [
+        'use_new_design' => filter_var($_ENV['USE_NEW_DESIGN'] ?? true, FILTER_VALIDATE_BOOLEAN),
+        'title' => $_ENV['TITLE'] ?? 'LibreSpeed MVC',
+        'tagline' => $_ENV['TAGLINE'] ?? 'HTML5 Network Speed Test',
+        'admin_email' => $_ENV['SPEEDTEST_EMAIL'] ?? ''
+    ],
     'telemetry' => [
         'enable_id_obfuscation' => filter_var($_ENV['TELEMETRY_OBFUSCATION'] ?? true, FILTER_VALIDATE_BOOLEAN),
         'redact_ip_addresses' => filter_var($_ENV['TELEMETRY_REDACT_IP'] ?? false, FILTER_VALIDATE_BOOLEAN)

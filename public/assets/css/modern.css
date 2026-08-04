@@ -1,0 +1,905 @@
+/**
+ * LibreSpeed Modern Theme Stylesheet
+ * Standardized CSS formatting with modern syntax.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Colors & Variables                                              */
+/* ------------------------------------------------------------------ */
+:root {
+    --theme-green: #5cf9fd;
+    --theme-pink: #d63bc6;
+
+    --background-backup-color: #0e0720;
+    --background-overlay-color: rgb(41 26 70 / 71%);
+
+    --primary-text-color: #ffffff;
+    --tagline-text-color: var(--theme-green);
+    --secondary-text-color: #898591;
+    --primary-text-disabled-color: #888888;
+    --secondary-text-disabled-color: #2e7d7f;
+
+    --button-text-color: #3e2f50;
+    --button-gradient-1-color-1: #f5f5f5;
+    --button-gradient-1-color-2: var(--theme-green);
+    --button-gradient-1-color-3: var(--theme-pink);
+    --button-shadow-color: #5cf9fd47;
+    --button-disabled-background-color: #a2a2a2;
+
+    --server-selector-border-color: #625b6b;
+    --server-selector-hover-border-color: var(--theme-green);
+    --server-selector-background-color: #251b32;
+    --server-selector-hover-background-color: var(--server-selector-border-color);
+
+    --gauge-background-color: #3e2f50;
+    --gauge-progress-color: #726c7a;
+    --gauge-pointer-green: #e2fbfc;
+    --gauge-pointer-pink: #d091ca;
+
+    --ping-and-jitter-primary-text-color: #f5f5f5;
+    --ping-and-jitter-secondary-text-color: #7b7b7b;
+
+    --popup-background-color: #251b32;
+    --popup-shadow-color: #000000;
+
+    --gauge-width: 32rem;
+    --gauge-height: 22rem;
+    --progress-width: 0.6rem;
+    --speed-width: 3rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Typography & Fonts                                              */
+/* ------------------------------------------------------------------ */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/assets/fonts/Inter-latin-ext.woff2") format("woff2");
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+      U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("/assets/fonts/Inter-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+      U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+      U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Base Structure Override                                         */
+/* ------------------------------------------------------------------ */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    min-height: 100vh;
+    width: 100vw;
+}
+
+html {
+    background-color: var(--background-backup-color);
+    background-image: url("/assets/images/background.jpeg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    font-size: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    html {
+        font-size: 8px;
+    }
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--background-overlay-color);
+    background-image: none; /* Override main.php radial gradients */
+    color: var(--primary-text-color);
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    max-width: 100%;
+    padding: 4rem 7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+}
+
+#header-logo {
+    display: inline-block;
+    width: 25rem;
+    height: 5rem;
+    background-image: url("/assets/images/logo.svg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: contain;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+header nav {
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        padding: 7rem 2rem;
+        text-align: center;
+        justify-content: center;
+    }
+    #header-logo {
+        background-position: center center;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Main & Layout Content                                           */
+/* ------------------------------------------------------------------ */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+main > h1 {
+    margin: 0.2rem;
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: -0.2rem;
+    color: var(--primary-text-color);
+}
+
+main p {
+    margin-top: 8rem;
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    font-weight: 400;
+    letter-spacing: -0.1rem;
+    color: var(--secondary-text-color);
+}
+
+main p#privacy-warning {
+    min-height: 5.3rem;
+}
+
+main p#privacy-warning > span {
+    font-weight: 700;
+    color: var(--theme-green);
+}
+
+main p#privacy-warning.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+main > p.tagline {
+    margin-top: 0;
+    margin-bottom: 6rem;
+    font-size: 2rem;
+    color: var(--tagline-text-color);
+}
+
+main a {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.1rem;
+    color: var(--secondary-text-color);
+    text-underline-offset: 0.3rem;
+    transition: text-underline-offset 0.2s;
+}
+
+main a:hover {
+    color: var(--theme-green);
+    text-underline-offset: 0.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Server Selector Dropdown                                        */
+/* ------------------------------------------------------------------ */
+.server-selector {
+    position: relative;
+    width: 50rem;
+    margin: 0 auto;
+    display: none;
+}
+
+.server-selector.active {
+    display: block;
+}
+
+@media screen and (max-width: 500px) {
+    .server-selector {
+        width: 100%;
+    }
+}
+
+.server-selector > .chosen {
+    position: relative;
+    height: 8.8rem;
+    border: 1px solid var(--server-selector-border-color);
+    border-radius: 0.8rem;
+    background-color: var(--server-selector-background-color);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.server-selector > .chosen:hover {
+    border-color: var(--server-selector-hover-border-color);
+}
+
+.server-selector > .chosen > div.chevron {
+    position: absolute;
+    display: block;
+    width: 32px;
+    height: 32px;
+    right: 1.8rem;
+    top: 1rem;
+}
+
+.server-selector > .chosen > p {
+    margin: 0;
+    position: absolute;
+    left: 2.4rem;
+    top: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.1rem;
+    color: var(--theme-green);
+}
+
+.server-selector > .chosen > h2 {
+    position: absolute;
+    left: 2.4rem;
+    right: 2.4rem;
+    bottom: 1rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.2rem;
+    color: var(--primary-text-color);
+    text-align: left;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.server-selector > .chosen > h2 span {
+    font-weight: 400;
+}
+
+.server-selector.single-server > .chosen {
+    cursor: default;
+}
+
+.server-selector.single-server > .chosen:hover {
+    border-color: var(--server-selector-border-color);
+}
+
+.server-selector.single-server > .chosen > div.chevron {
+    display: none;
+}
+
+.server-selector.disabled {
+    pointer-events: none;
+}
+
+.server-selector.disabled > .chosen {
+    cursor: default;
+}
+
+.server-selector.disabled > .chosen:hover {
+    border-color: var(--server-selector-border-color);
+}
+
+.server-selector.disabled > .chosen > p {
+    color: var(--secondary-text-disabled-color);
+}
+
+.server-selector.disabled > .chosen > h2 {
+    color: var(--primary-text-disabled-color);
+}
+
+.server-selector > ul.servers {
+    position: absolute;
+    width: 50rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 10;
+    border: 1px solid var(--server-selector-border-color);
+    border-radius: 0.8rem;
+    background-color: var(--server-selector-background-color);
+    list-style: none;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.1s;
+}
+
+.server-selector > ul.servers.active {
+    transform: scaleY(1);
+}
+
+@media screen and (max-width: 800px) {
+    .server-selector > ul.servers {
+        width: 100%;
+    }
+}
+
+.server-selector > ul.servers > li:first-child a {
+    padding-top: 1.5rem;
+}
+
+.server-selector > ul.servers > li:last-child a {
+    padding-bottom: 1.5rem;
+}
+
+.server-selector > ul.servers > li a {
+    display: block;
+    padding: 0.7rem 2.4rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.2rem;
+    color: var(--primary-text-color);
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.server-selector > ul.servers > li a span {
+    font-weight: 400;
+}
+
+.server-selector > ul.servers > li a:hover {
+    background-color: var(--server-selector-hover-background-color);
+}
+
+.server-selector > p.sponsor {
+    margin: 1rem 0 5rem 0;
+}
+
+.server-selector > p.sponsor a {
+    font-weight: 400;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Buttons                                                         */
+/* ------------------------------------------------------------------ */
+button {
+    height: 6.8rem;
+    min-width: 26.4rem;
+    padding: 0 5rem;
+    margin: 2.5rem;
+    border-radius: 3.4rem;
+    border: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.1rem;
+    color: var(--button-text-color);
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.6rem 0 var(--button-shadow-color);
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: scale(1) translate3d(0, 0, 0) perspective(1px);
+    background: var(--button-gradient-1-color-1);
+    transition: background-position 0.2s, transform 0.2s;
+    background-position: 0% 0%;
+    background: linear-gradient(
+        92.97deg,
+        var(--button-gradient-1-color-1) 0%,
+        var(--button-gradient-1-color-1) 33%,
+        var(--button-gradient-1-color-2) 40%,
+        var(--button-gradient-1-color-3) 66.71%,
+        var(--button-gradient-1-color-3) 100%
+    );
+    background-size: 300% 100%;
+}
+
+button.disabled {
+    cursor: default;
+    transform: scale(1) translate3d(0, 0, 0) perspective(1px);
+    background: var(--button-disabled-background-color) !important;
+}
+
+button.small {
+    height: 4.7rem;
+    min-width: 20.2rem;
+    text-transform: lowercase;
+}
+
+button.inverted {
+    border: 1px solid var(--button-gradient-1-color-1);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+button.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+button:hover {
+    background-position: 60% 0%;
+    transform: scale(1.03) translate3d(0, 0, 0) perspective(1px);
+}
+
+button.active,
+button:active {
+    background-position: 100% 0%;
+    animation: pulse 0.7s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1.03) translate3d(0, 0, 0) perspective(1px);
+    }
+    20% {
+        transform: scale(1.2) translate3d(0, 0, 0) perspective(1px);
+    }
+    40% {
+        transform: scale(1) translate3d(0, 0, 0) perspective(1px);
+    }
+    60% {
+        transform: scale(1.1) translate3d(0, 0, 0) perspective(1px);
+    }
+    100% {
+        transform: scale(1) translate3d(0, 0, 0) perspective(1px);
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. Gauges                                                          */
+/* ------------------------------------------------------------------ */
+.gauge-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    gap: 5rem;
+    margin: 5rem auto 3rem auto;
+}
+
+@media screen and (max-width: 1100px) {
+    .gauge-layout {
+        display: grid;
+        grid-template-areas:
+            "download upload"
+            "ping jitter";
+        justify-items: center;
+        justify-content: center;
+        --gauge-width: min(40vw, 32rem);
+        --gauge-height: min(28vw, 22rem);
+        --progress-width: min(1.2vw, 0.6rem);
+        --speed-width: min(4vw, 3rem);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .gauge-layout {
+        gap: 5rem 2rem;
+    }
+}
+
+div.gauge {
+    position: relative;
+    transform: scale(1);
+    width: var(--gauge-width);
+    height: var(--gauge-height);
+}
+
+div.gauge.download {
+    grid-area: download;
+}
+
+div.gauge.upload {
+    grid-area: upload;
+}
+
+div.gauge > .progress,
+div.gauge > .speed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--gauge-width);
+    height: calc(var(--gauge-width) / 2);
+    overflow: hidden;
+}
+
+div.gauge > .progress:after,
+div.gauge > .progress:before,
+div.gauge > .speed:after,
+div.gauge > .speed:before {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+}
+
+div.gauge > .progress:before,
+div.gauge > .progress:after {
+    top: 0;
+    left: 0;
+    width: var(--gauge-width);
+    height: calc(var(--gauge-width) / 2);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    border: var(--progress-width) solid var(--gauge-background-color);
+    border-bottom: 0;
+    transform-origin: bottom center;
+    transform: rotate(var(--progress-rotation));
+    transition: transform 0.2s linear;
+}
+
+div.gauge > .progress:after {
+    top: calc(var(--gauge-width) / 2);
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    border: var(--progress-width) solid var(--gauge-background-color);
+    border-top: 0;
+    transform-origin: top center;
+}
+
+div.gauge > .speed:before,
+div.gauge > .speed:after {
+    transform: rotate(var(--speed-rotation));
+    transition: transform 0.2s ease;
+    transition-timing-function: cubic-bezier(0.56, 0.04, 0.59, 0.91);
+}
+
+div.gauge > .speed:before {
+    position: fixed;
+    top: calc(var(--gauge-width) / 2 - var(--speed-width) / 3);
+    left: var(--progress-width);
+    width: 0;
+    height: 0;
+    border-top: calc(var(--speed-width) / 3) solid transparent;
+    border-bottom: calc(var(--speed-width) / 3) solid transparent;
+    border-right: calc(var(--speed-width) * 0.97) solid var(--gauge-background-color);
+    z-index: 1;
+    transform-origin: calc(var(--gauge-width) / 2 - var(--progress-width)) calc(var(--speed-width) / 3);
+}
+
+div.gauge > .speed:after {
+    top: calc(var(--gauge-width) / 2);
+    left: calc(var(--progress-width) - 0.1rem);
+    width: calc(var(--gauge-width) - var(--progress-width) * 2 + 0.2rem);
+    height: calc(var(--gauge-width) / 2 - var(--progress-width) + 0.1rem);
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    border: var(--speed-width) solid var(--gauge-background-color);
+    border-top: 0;
+    transform-origin: top center;
+}
+
+div.gauge.enabled.download > .progress:after {
+    border-color: var(--theme-pink);
+}
+
+div.gauge.enabled.download > .speed:before {
+    border-right-color: var(--gauge-pointer-pink);
+}
+
+div.gauge.enabled.download > .speed:after {
+    border-color: var(--theme-pink);
+}
+
+div.gauge.enabled.upload > .progress:after {
+    border-color: var(--theme-green);
+}
+
+div.gauge.enabled.upload > .speed:before {
+    border-right-color: var(--gauge-pointer-green);
+}
+
+div.gauge.enabled.upload > .speed:after {
+    border-color: var(--theme-green);
+}
+
+div.gauge.enabled > h1 > span {
+    color: var(--primary-text-color);
+}
+
+div.gauge > h1,
+div.gauge > h2 {
+    display: block;
+    position: absolute;
+    width: 100%;
+    font-family: "Inter", sans-serif;
+    font-size: 2.1rem;
+    letter-spacing: -0.1rem;
+    color: var(--secondary-text-color);
+}
+
+div.gauge > h1 {
+    bottom: calc(var(--gauge-height) - var(--gauge-width) / 2);
+    font-weight: 300;
+}
+
+div.gauge > h1 > span {
+    font-size: 5.5rem;
+    font-weight: 200;
+    display: block;
+    color: var(--secondary-text-color);
+    letter-spacing: -0.3rem;
+}
+
+div.gauge > h2 {
+    bottom: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 500px) {
+    div.gauge > h1 {
+        font-size: 3vw;
+    }
+    div.gauge > h1 > span {
+        font-size: 8vw;
+    }
+    div.gauge > h2 {
+        font-size: 3vw;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* 8. Ping & Jitter                                                   */
+/* ------------------------------------------------------------------ */
+.ping,
+.jitter {
+    grid-area: jitter;
+    display: flex;
+    align-items: end;
+    height: calc(var(--gauge-width) / 2);
+    width: 13rem;
+    font-size: 2.1rem;
+    letter-spacing: -0.1rem;
+    font-weight: 300;
+    color: var(--ping-and-jitter-secondary-text-color);
+}
+
+.ping > .label,
+.jitter > .label {
+    font-weight: 700;
+}
+
+.ping > .value,
+.jitter > .value {
+    color: var(--ping-and-jitter-primary-text-color);
+}
+
+.ping.hidden,
+.jitter.hidden {
+    display: none;
+}
+
+@media screen and (max-width: 1100px) {
+    .ping,
+    .jitter {
+        width: 100%;
+        height: auto;
+        justify-content: center !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .ping,
+    .jitter {
+        font-size: 1.8rem;
+    }
+}
+
+.ping {
+    grid-area: ping;
+    justify-content: end;
+}
+
+/* ------------------------------------------------------------------ */
+/* 9. Dialog Popups (Modals)                                          */
+/* ------------------------------------------------------------------ */
+dialog {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70vw;
+    height: 70vh;
+    margin: auto;
+    margin-top: 23rem;
+    background: var(--popup-background-color);
+    border: none;
+    border-radius: 0.8rem;
+    box-shadow: 0 1rem 3rem var(--popup-shadow-color);
+    animation: fade-out 0.3s ease-out;
+}
+
+dialog[open] {
+    display: flex;
+    animation: fade-in 0.3s ease-out;
+}
+
+@media screen and (max-width: 800px) {
+    dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: auto;
+        height: auto;
+        margin: 0;
+    }
+}
+
+dialog > .close-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    cursor: pointer;
+}
+
+dialog > section {
+    max-width: 800px;
+    overflow-y: auto;
+    margin: 4rem 2rem 2rem 4rem;
+    padding: 0 2rem 0 0;
+    text-align: left;
+}
+
+dialog > section h1,
+dialog > section h2 {
+    margin: 3rem 0 2rem 0;
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: -0.2rem;
+    color: var(--primary-text-color);
+}
+
+dialog > section h2 {
+    margin: 2rem 0 1rem 0;
+    font-size: 2.5rem;
+}
+
+dialog > section p,
+dialog > section li {
+    margin: 1rem 0 1rem 0;
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    font-weight: 400;
+    letter-spacing: -0.1rem;
+    color: var(--secondary-text-color);
+}
+
+dialog > section ul {
+    list-style-position: inside;
+    margin: 1rem;
+}
+
+dialog > section ul li {
+    margin: 0.1rem 0;
+}
+
+dialog > section a {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.1rem;
+    color: var(--secondary-text-color);
+    text-underline-offset: 0.3rem;
+    transition: text-underline-offset 0.2s;
+}
+
+dialog > section a:hover {
+    color: var(--theme-green);
+    text-underline-offset: 0.5rem;
+}
+
+dialog img#results {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.4rem;
+    margin-bottom: 2rem;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+        display: none;
+    }
+    0.1% {
+        display: flex;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        display: flex;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        display: flex;
+    }
+    99.9% {
+        display: flex;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.6);
+        display: none;
+    }
+}
+
+@media all and (prefers-color-scheme: dark) {
+    html,
+    body {
+        background: #202020;
+        color: #F4F4F4;
+        color-scheme: dark;
+    }
+
+    main > h1 {
+        color: #E0E0E0;
+    }
+
+    main a {
+        color: #9090FF;
+    }
+
+    dialog#privacy {
+        background: #000000;
+    }
+
+    img#results-img {
+        filter: invert(1);
+    }
+}
+
+/* Footer layout override for modern theme */
+footer {
+    width: 100%;
+    margin: auto auto 0 auto;
+    padding: 5rem;
+    border-top: none;
+    text-align: center;
+}
+
+footer p.source a {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.1rem;
+    color: var(--theme-green);
+    text-underline-offset: 0.3rem;
+    transition: text-underline-offset 0.2s;
+    text-decoration: underline;
+}
+
+footer p.source a:hover {
+    color: var(--theme-pink);
+    text-underline-offset: 0.5rem;
+}

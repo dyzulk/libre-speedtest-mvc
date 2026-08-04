@@ -13,8 +13,14 @@ class SpeedtestController extends Controller
      */
     public function index(): void
     {
-        $this->render('home', [
-            'title' => 'LibreSpeed MVC',
+        $config = require __DIR__ . '/../Config/config.php';
+        $useNew = $config['app']['use_new_design'] ?? true;
+        $view = $useNew ? 'home_modern' : 'home_classic';
+
+        $this->render($view, [
+            'title' => $config['app']['title'] ?? 'LibreSpeed MVC',
+            'tagline' => $config['app']['tagline'] ?? 'HTML5 Network Speed Test',
+            'admin_email' => $config['app']['admin_email'] ?? '',
             'version' => '1.0.0-mvc'
         ]);
     }

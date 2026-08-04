@@ -1,0 +1,127 @@
+<!-- Modern LibreSpeed speedtest interface, migrated from from/frontend/ -->
+<link rel="stylesheet" type="text/css" href="/assets/css/modern.css">
+<script type="text/javascript" src="/assets/js/index.js"></script>
+
+<h1>Free and Open Source Speedtest.</h1>
+<p class="tagline">No Flash, No Java, No Websockets, No Bullsh*t</p>
+
+<div class="server-selector">
+    <div class="chosen">
+        <div class="chevron">
+            <img src="/assets/images/chevron.svg" alt="select...">
+        </div>
+        <p>current server</p>
+        <h2 id="selected-server">searching nearest server...</h2>
+    </div>
+    <ul class="servers"></ul>
+    <p class="sponsor" id="sponsor">&nbsp;</p>
+</div>
+
+<p id="privacy-warning" class="hidden">
+    by clicking the start button you agree to our privacy policy<br>
+    <a href="#" id="choose-privacy">or choose your privacy options</a>
+</p>
+<button class="disabled" id="start-button"></button>
+
+<div class="gauge-layout">
+    <div class="ping hidden">
+        <span class="label">Ping</span>:&nbsp;
+        <span class="value" id="ping">00</span>ms
+    </div>
+
+    <div class="gauge download" id="download-gauge">
+        <div class="progress"></div>
+        <div class="speed"></div>
+        <h1><span id="download-speed">00</span> Mbps</h1>
+        <h2>Download</h2>
+    </div>
+
+    <div class="gauge upload" id="upload-gauge">
+        <div class="progress"></div>
+        <div class="speed"></div>
+        <h1><span id="upload-speed">00</span> Mbps</h1>
+        <h2>Upload</h2>
+    </div>
+
+    <div class="jitter hidden">
+        <span class="label">Jitter</span>:&nbsp;
+        <span class="value" id="jitter">00</span>ms
+    </div>
+</div>
+
+<button class="small inverted hidden" id="share-results">
+    Share results
+</button>
+
+<dialog id="share">
+    <div class="close-dialog">
+        <img src="/assets/images/close-button.svg" alt="Close">
+    </div>
+    <img id="results" src="" alt="Test results in graphical form">
+    <button id="copy-link">Copy link</button>
+</dialog>
+
+<dialog id="privacy">
+    <div class="close-dialog">
+        <img src="/assets/images/close-button.svg" alt="Close">
+    </div>
+    <section>
+        <h1>Privacy Policy</h1>
+        <p>
+            This HTML5 speed test server is configured with telemetry enabled.
+        </p>
+
+        <h2>What data we collect</h2>
+        <p>
+            At the end of the test, the following data is collected and stored:
+        </p>
+
+        <ul>
+            <li>Test ID</li>
+            <li>Time of testing</li>
+            <li>Test results (download and upload speed, ping and jitter)</li>
+            <li>IP address</li>
+            <li>ISP information</li>
+            <li>Approximate location (inferred from IP address, not GPS)</li>
+            <li>User agent and browser locale</li>
+            <li>Test log (contains no personal information)</li>
+        </ul>
+
+        <h2>How we use the data</h2>
+        <p>Data collected through this service is used to:</p>
+
+        <ul>
+            <li>
+                Allow sharing of test results (sharable image for forums, etc.)
+            </li>
+            <li>
+                To improve the service offered to you (for instance, to detect
+                problems on our side)
+            </li>
+        </ul>
+
+        <p>No personal information is disclosed to third parties.</p>
+
+        <h2>Your consent</h2>
+        <p>
+            By starting the test, you consent to the terms of this privacy policy.
+        </p>
+
+        <h2>Data removal</h2>
+        <p>
+            If you want to have your information deleted, you need to provide
+            either the ID of the test or your IP address. This is the only way to
+            identify your data, without this information we won't be able to
+            comply with your request.
+        </p>
+        <p>
+            Contact this email address for all deletion requests:
+            <?php if (!empty($admin_email)): ?>
+                <a href="mailto:<?php echo htmlspecialchars($admin_email); ?>"><?php echo htmlspecialchars($admin_email); ?></a>.
+            <?php else: ?>
+                <a href="mailto:PUT@YOUR_EMAIL.HERE">TO BE FILLED BY DEVELOPER</a>.
+            <?php endif; ?>
+        </p>
+    </section>
+    <button id="close-privacy">Close</button>
+</dialog>

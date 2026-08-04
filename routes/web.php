@@ -9,4 +9,6 @@ $router->add('GET', '/garbage', 'EngineController@garbage');
 $router->add('GET', '/getIP', 'EngineController@getIP');
 $router->add('POST', '/telemetry', 'TelemetryController@store');
 $router->add('GET', '/results/{id}', 'TelemetryController@show');
+$router->add('GET', '/results', 'TelemetryController@show');
+$router->add('GET', '/results/', 'TelemetryController@show');
 $router->add('GET', '/stats', 'TelemetryController@stats');
