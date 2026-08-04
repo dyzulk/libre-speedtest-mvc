@@ -1,5 +1,5 @@
-<!-- Modern LibreSpeed speedtest interface, migrated from from/frontend/ -->
 <link rel="stylesheet" type="text/css" href="/assets/css/modern.css">
+<script type="text/javascript" src="/speedtest.js"></script>
 <script type="text/javascript" src="/assets/js/index.js"></script>
 
 <h1>Free and Open Source Speedtest.</h1>

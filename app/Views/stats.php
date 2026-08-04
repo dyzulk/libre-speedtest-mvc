@@ -79,6 +79,11 @@
             <h1>Telemetry Logs</h1>
             <p>List of recent speedtest executions</p>
         </div>
+        <div>
+            <a href="/logout" class="badge" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #ef4444;">
+                Logout
+            </a>
+        </div>
     </div>
 
     <div class="table-container">

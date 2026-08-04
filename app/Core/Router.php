@@ -12,14 +12,16 @@ class Router
      * @param string $method
      * @param string $route
      * @param string $controllerAction
+     * @param array $middlewares
      * @return void
      */
-    public function add(string $method, string $route, string $controllerAction): void
+    public function add(string $method, string $route, string $controllerAction, array $middlewares = []): void
     {
         $this->routes[] = [
             'method' => strtoupper($method),
             'route' => $route,
-            'controllerAction' => $controllerAction
+            'controllerAction' => $controllerAction,
+            'middlewares' => $middlewares
         ];
     }
 
@@ -46,6 +48,16 @@ class Router
 
             if (preg_match($pattern, $path, $matches)) {
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+
+                // Run middlewares registered on the route
+                $middlewares = $route['middlewares'] ?? [];
+                foreach ($middlewares as $middlewareName) {
+                    $middlewareClass = "App\\Middleware\\" . $middlewareName;
+                    if (class_exists($middlewareClass)) {
+                        $middleware = new $middlewareClass();
+                        $middleware->handle();
+                    }
+                }
                 
                 list($controllerName, $actionName) = explode('@', $route['controllerAction']);
                 $controllerClass = "App\\Controllers\\" . $controllerName;

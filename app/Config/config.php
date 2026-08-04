@@ -37,6 +37,7 @@ return [
         'admin_email' => $_ENV['SPEEDTEST_EMAIL'] ?? ''
     ],
     'telemetry' => [
+        'password' => $_ENV['SPEEDTEST_PASSWORD'] ?? '',
         'enable_id_obfuscation' => filter_var($_ENV['TELEMETRY_OBFUSCATION'] ?? true, FILTER_VALIDATE_BOOLEAN),
         'redact_ip_addresses' => filter_var($_ENV['TELEMETRY_REDACT_IP'] ?? false, FILTER_VALIDATE_BOOLEAN)
     ],
