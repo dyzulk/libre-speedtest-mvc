@@ -1,0 +1,3 @@
+[submodule "from"]
+	path = from
+	url = https://github.com/dyzulk/libre-speedtest.git

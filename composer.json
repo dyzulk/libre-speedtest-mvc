@@ -1,0 +1,14 @@
+{
+    "name": "dyzulk/libre-speedtest-mvc",
+    "description": "LibreSpeed Speedtest migrated to PHP MVC",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
