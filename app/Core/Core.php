@@ -20,4 +20,20 @@ class Core
             $dotenv->load();
         }
     }
+
+    /**
+     * Get the value of an environment variable.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function env(string $key, $default = null)
+    {
+        $val = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+        if ($val === false || $val === null) {
+            return $default;
+        }
+        return $val;
+    }
 }

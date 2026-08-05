@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Ensure nobody user owns the html directory for sqlite writing
+chown -R nobody:nobody /var/www/html
+
 # Start PHP-FPM in background
 echo "Starting PHP-FPM..."
 FPM_BIN=$(find /usr/sbin -name "php-fpm*" | head -n 1)
