@@ -18,6 +18,11 @@
 		//INITIALIZE SPEEDTEST
 		var s = new Speedtest(); //create speed test object
 		s.setParameter("telemetry_level", "basic"); //enable basic telemetry (for results sharing)
+		s.setParameter("url_dl", "garbage");
+		s.setParameter("url_ul", "empty");
+		s.setParameter("url_ping", "empty");
+		s.setParameter("url_getIp", "getIP");
+		s.setParameter("url_telemetry", "telemetry");
 
 		//SERVER AUTO SELECTION
 		function initServers() {
