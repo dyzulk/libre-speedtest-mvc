@@ -5,5 +5,5 @@ services:
       dockerfile: docker/Dockerfile.frankenphp
     container_name: libre-speedtest-frankenphp
     ports:
-      - "8080:8080"
+      - "${WEBPORT:-8080}:8080"
     restart: always

@@ -5,5 +5,5 @@ services:
       dockerfile: docker/Dockerfile
     container_name: libre-speedtest-openresty
     ports:
-      - "8080:8080"
+      - "${WEBPORT:-8080}:8080"
     restart: always
