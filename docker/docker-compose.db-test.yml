@@ -1,0 +1,158 @@
+# Multi-Database Test Profiles
+#
+# Usage:
+#   docker compose -f docker/docker-compose.db-test.yml --profile mysql up -d
+#   docker compose -f docker/docker-compose.db-test.yml --profile mariadb up -d
+#   docker compose -f docker/docker-compose.db-test.yml --profile postgres up -d
+#   docker compose -f docker/docker-compose.db-test.yml --profile mssql up -d
+#
+# Stop:
+#   docker compose -f docker/docker-compose.db-test.yml --profile <name> down -v
+
+services:
+  # ===== MySQL =====
+  mysql-db:
+    image: mysql:8
+    profiles: [mysql]
+    container_name: speedtest-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: speedtest
+      MYSQL_DATABASE: speedtest
+      MYSQL_USER: speedtest
+      MYSQL_PASSWORD: speedtest
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  speedtest-mysql:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    profiles: [mysql]
+    container_name: speedtest-app-mysql
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: mysql-db
+      DB_PORT: 3306
+      DB_NAME: speedtest
+      DB_USER: speedtest
+      DB_PASS: speedtest
+    ports:
+      - "${WEBPORT:-8080}:8080"
+
+  # ===== MariaDB =====
+  mariadb-db:
+    image: mariadb:11
+    profiles: [mariadb]
+    container_name: speedtest-mariadb-db
+    environment:
+      MARIADB_ROOT_PASSWORD: speedtest
+      MARIADB_DATABASE: speedtest
+      MARIADB_USER: speedtest
+      MARIADB_PASSWORD: speedtest
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  speedtest-mariadb:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    profiles: [mariadb]
+    container_name: speedtest-app-mariadb
+    depends_on:
+      mariadb-db:
+        condition: service_healthy
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: mariadb-db
+      DB_PORT: 3306
+      DB_NAME: speedtest
+      DB_USER: speedtest
+      DB_PASS: speedtest
+    ports:
+      - "${WEBPORT:-8080}:8080"
+
+  # ===== PostgreSQL =====
+  postgres-db:
+    image: postgres:16-alpine
+    profiles: [postgres]
+    container_name: speedtest-postgres-db
+    environment:
+      POSTGRES_DB: speedtest
+      POSTGRES_USER: speedtest
+      POSTGRES_PASSWORD: speedtest
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U speedtest"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  speedtest-postgres:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    profiles: [postgres]
+    container_name: speedtest-app-postgres
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      DB_TYPE: postgresql
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_NAME: speedtest
+      DB_USER: speedtest
+      DB_PASS: speedtest
+    ports:
+      - "${WEBPORT:-8080}:8080"
+
+  # ===== MSSQL (amd64 only) =====
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    profiles: [mssql]
+    container_name: speedtest-mssql-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Speedtest1!"
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Speedtest1!' -C -Q 'SELECT 1' || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Speedtest1!' -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
+  speedtest-mssql:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    profiles: [mssql]
+    container_name: speedtest-app-mssql
+    depends_on:
+      mssql-db:
+        condition: service_healthy
+    environment:
+      DB_TYPE: mssql
+      DB_HOST: mssql-db
+      DB_PORT: 1433
+      DB_NAME: master
+      DB_USER: sa
+      DB_PASS: "Speedtest1!"
+      DB_MSSQL_TRUST_CERT: "true"
+    ports:
+      - "${WEBPORT:-8080}:8080"

@@ -8,6 +8,7 @@ use Exception;
 class Database
 {
     private static $connection = null;
+    private static $driver = null;
 
     /**
      * Get the PDO database connection.
@@ -46,12 +47,31 @@ class Database
                 default:
                     throw new Exception("Unsupported database type: {$type}");
             }
+
+            // Store the PDO driver name and auto-create the table
+            if (self::$connection) {
+                self::$driver = self::$connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+                self::$connection->exec(Schema::getCreateTableSQL(self::$driver));
+            }
         } catch (Exception $e) {
             error_log('Database Connection Error: ' . $e->getMessage());
             self::$connection = null;
         }
 
         return self::$connection;
+    }
+
+    /**
+     * Get the active PDO driver name.
+     *
+     * @return string|null Driver name (sqlite, mysql, pgsql, sqlsrv) or null if not connected.
+     */
+    public static function getDriver(): ?string
+    {
+        if (self::$driver === null && self::$connection !== null) {
+            self::$driver = self::$connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+        }
+        return self::$driver;
     }
 
     /**
@@ -69,27 +89,7 @@ class Database
             mkdir($dir, 0755, true);
         }
 
-        $pdo = new PDO('sqlite:' . $file, null, null, $options);
-
-        // Set up the sqlite table automatically if it doesn't exist
-        $pdo->exec('
-            CREATE TABLE IF NOT EXISTS `speedtest_users` (
-                `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                `ispinfo` TEXT,
-                `extra` TEXT,
-                `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `ip` TEXT NOT NULL,
-                `ua` TEXT NOT NULL,
-                `lang` TEXT NOT NULL,
-                `dl` TEXT,
-                `ul` TEXT,
-                `ping` TEXT,
-                `jitter` TEXT,
-                `log` TEXT
-            );
-        ');
-
-        return $pdo;
+        return new PDO('sqlite:' . $file, null, null, $options);
     }
 
     /**

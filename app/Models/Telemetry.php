@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Database;
+use App\Core\Schema;
 use PDO;
 
 class Telemetry
@@ -102,14 +103,19 @@ class Telemetry
             ];
         }
 
-        $stmt = $db->query('
+        $driver = Database::getDriver();
+        $castDl = Schema::castAsFloat($driver, 'dl');
+        $castUl = Schema::castAsFloat($driver, 'ul');
+        $castPing = Schema::castAsFloat($driver, 'ping');
+
+        $stmt = $db->query("
             SELECT 
                 COUNT(*) as total_tests,
-                AVG(CAST(dl AS REAL)) as avg_dl,
-                AVG(CAST(ul AS REAL)) as avg_ul,
-                AVG(CAST(ping AS REAL)) as avg_ping
+                AVG({$castDl}) as avg_dl,
+                AVG({$castUl}) as avg_ul,
+                AVG({$castPing}) as avg_ping
             FROM speedtest_users
-        ');
+        ");
         
         $row = $stmt->fetch();
         return [
