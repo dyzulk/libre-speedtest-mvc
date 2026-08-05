@@ -3,8 +3,13 @@ set -e
 
 # Start PHP-FPM in background
 echo "Starting PHP-FPM..."
-FPM_BIN=$(which php-fpm || find /usr/sbin -name "php-fpm*" | head -n 1)
-if [ -n "$FPM_BIN" ]; then
+FPM_BIN=$(find /usr/sbin -name "php-fpm*" | head -n 1)
+if [ -z "$FPM_BIN" ]; then
+  FPM_BIN=$(command -v php-fpm 2>/dev/null || true)
+fi
+
+if [ ! -z "$FPM_BIN" ]; then
+  echo "Found PHP-FPM: $FPM_BIN. Starting..."
   $FPM_BIN -D
 else
   echo "ERROR: PHP-FPM not found!" >&2
