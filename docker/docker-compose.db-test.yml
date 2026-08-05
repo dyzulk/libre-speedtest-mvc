@@ -38,12 +38,27 @@ services:
       mysql-db:
         condition: service_healthy
     environment:
-      DB_TYPE: mysql
-      DB_HOST: mysql-db
-      DB_PORT: 3306
-      DB_NAME: speedtest
-      DB_USER: speedtest
-      DB_PASS: speedtest
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - TZ=${TZ}
+      - TITLE=${TITLE}
+      - TAGLINE=${TAGLINE}
+      - MODE=${MODE}
+      - USE_NEW_DESIGN=${USE_NEW_DESIGN}
+      - TELEMETRY=${TELEMETRY}
+      - SPEEDTEST_PASSWORD=${SPEEDTEST_PASSWORD}
+      - SPEEDTEST_EMAIL=${SPEEDTEST_EMAIL}
+      - TELEMETRY_OBFUSCATION=${TELEMETRY_OBFUSCATION}
+      - OBFUSCATION_SALT=${OBFUSCATION_SALT}
+      - TELEMETRY_REDACT_IP=${TELEMETRY_REDACT_IP}
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+      - IPINFO_OFFLINE_DB=${IPINFO_OFFLINE_DB}
+      - DB_TYPE=mysql
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_NAME=speedtest
+      - DB_USER=speedtest
+      - DB_PASS=speedtest
     ports:
       - "${WEBPORT:-8080}:8080"
 
@@ -75,12 +90,27 @@ services:
       mariadb-db:
         condition: service_healthy
     environment:
-      DB_TYPE: mysql
-      DB_HOST: mariadb-db
-      DB_PORT: 3306
-      DB_NAME: speedtest
-      DB_USER: speedtest
-      DB_PASS: speedtest
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - TZ=${TZ}
+      - TITLE=${TITLE}
+      - TAGLINE=${TAGLINE}
+      - MODE=${MODE}
+      - USE_NEW_DESIGN=${USE_NEW_DESIGN}
+      - TELEMETRY=${TELEMETRY}
+      - SPEEDTEST_PASSWORD=${SPEEDTEST_PASSWORD}
+      - SPEEDTEST_EMAIL=${SPEEDTEST_EMAIL}
+      - TELEMETRY_OBFUSCATION=${TELEMETRY_OBFUSCATION}
+      - OBFUSCATION_SALT=${OBFUSCATION_SALT}
+      - TELEMETRY_REDACT_IP=${TELEMETRY_REDACT_IP}
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+      - IPINFO_OFFLINE_DB=${IPINFO_OFFLINE_DB}
+      - DB_TYPE=mysql
+      - DB_HOST=mariadb-db
+      - DB_PORT=3306
+      - DB_NAME=speedtest
+      - DB_USER=speedtest
+      - DB_PASS=speedtest
     ports:
       - "${WEBPORT:-8080}:8080"
 
@@ -111,12 +141,27 @@ services:
       postgres-db:
         condition: service_healthy
     environment:
-      DB_TYPE: postgresql
-      DB_HOST: postgres-db
-      DB_PORT: 5432
-      DB_NAME: speedtest
-      DB_USER: speedtest
-      DB_PASS: speedtest
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - TZ=${TZ}
+      - TITLE=${TITLE}
+      - TAGLINE=${TAGLINE}
+      - MODE=${MODE}
+      - USE_NEW_DESIGN=${USE_NEW_DESIGN}
+      - TELEMETRY=${TELEMETRY}
+      - SPEEDTEST_PASSWORD=${SPEEDTEST_PASSWORD}
+      - SPEEDTEST_EMAIL=${SPEEDTEST_EMAIL}
+      - TELEMETRY_OBFUSCATION=${TELEMETRY_OBFUSCATION}
+      - OBFUSCATION_SALT=${OBFUSCATION_SALT}
+      - TELEMETRY_REDACT_IP=${TELEMETRY_REDACT_IP}
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+      - IPINFO_OFFLINE_DB=${IPINFO_OFFLINE_DB}
+      - DB_TYPE=postgresql
+      - DB_HOST=postgres-db
+      - DB_PORT=5432
+      - DB_NAME=speedtest
+      - DB_USER=speedtest
+      - DB_PASS=speedtest
     ports:
       - "${WEBPORT:-8080}:8080"
 
@@ -147,12 +192,27 @@ services:
       mssql-db:
         condition: service_healthy
     environment:
-      DB_TYPE: mssql
-      DB_HOST: mssql-db
-      DB_PORT: 1433
-      DB_NAME: master
-      DB_USER: sa
-      DB_PASS: "Speedtest1!"
-      DB_MSSQL_TRUST_CERT: "true"
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - TZ=${TZ}
+      - TITLE=${TITLE}
+      - TAGLINE=${TAGLINE}
+      - MODE=${MODE}
+      - USE_NEW_DESIGN=${USE_NEW_DESIGN}
+      - TELEMETRY=${TELEMETRY}
+      - SPEEDTEST_PASSWORD=${SPEEDTEST_PASSWORD}
+      - SPEEDTEST_EMAIL=${SPEEDTEST_EMAIL}
+      - TELEMETRY_OBFUSCATION=${TELEMETRY_OBFUSCATION}
+      - OBFUSCATION_SALT=${OBFUSCATION_SALT}
+      - TELEMETRY_REDACT_IP=${TELEMETRY_REDACT_IP}
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+      - IPINFO_OFFLINE_DB=${IPINFO_OFFLINE_DB}
+      - DB_TYPE=mssql
+      - DB_HOST=mssql-db
+      - DB_PORT=1433
+      - DB_NAME=master
+      - DB_USER=sa
+      - DB_PASS=Speedtest1!
+      - DB_MSSQL_TRUST_CERT=true
     ports:
       - "${WEBPORT:-8080}:8080"

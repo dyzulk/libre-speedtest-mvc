@@ -6,4 +6,29 @@ services:
     container_name: libre-speedtest-frankenphp
     ports:
       - "${WEBPORT:-8080}:8080"
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=${APP_DEBUG}
+      - TZ=${TZ}
+      - TITLE=${TITLE}
+      - TAGLINE=${TAGLINE}
+      - MODE=${MODE}
+      - USE_NEW_DESIGN=${USE_NEW_DESIGN}
+      - DB_TYPE=${DB_TYPE}
+      - DB_SQLITE_FILE=${DB_SQLITE_FILE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_MSSQL_WINDOWS_AUTH=${DB_MSSQL_WINDOWS_AUTH}
+      - DB_MSSQL_TRUST_CERT=${DB_MSSQL_TRUST_CERT}
+      - TELEMETRY=${TELEMETRY}
+      - SPEEDTEST_PASSWORD=${SPEEDTEST_PASSWORD}
+      - SPEEDTEST_EMAIL=${SPEEDTEST_EMAIL}
+      - TELEMETRY_OBFUSCATION=${TELEMETRY_OBFUSCATION}
+      - OBFUSCATION_SALT=${OBFUSCATION_SALT}
+      - TELEMETRY_REDACT_IP=${TELEMETRY_REDACT_IP}
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+      - IPINFO_OFFLINE_DB=${IPINFO_OFFLINE_DB}
     restart: always
