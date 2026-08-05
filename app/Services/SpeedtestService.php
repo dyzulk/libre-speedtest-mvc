@@ -35,13 +35,20 @@ class SpeedtestService
             ];
         }
 
-        $config = require __DIR__ . '/../Config/config.php';
-        $apiKey = $config['ipinfo']['apikey'] ?? '';
+        if (isset($_GET['isp'])) {
+            $config = require __DIR__ . '/../Config/config.php';
+            $apiKey = $config['ipinfo']['apikey'] ?? '';
 
-        if (!empty($apiKey)) {
-            $apiResult = $this->getIspInfo_ipinfoApi($ip, $apiKey);
-            if (!empty($apiResult)) {
-                return $apiResult;
+            if (!empty($apiKey)) {
+                $apiResult = $this->getIspInfo_ipinfoApi($ip, $apiKey);
+                if (!empty($apiResult)) {
+                    return $apiResult;
+                }
+            }
+
+            $offlineResult = $this->getIspInfo_ipinfoOfflineDb($ip);
+            if (!empty($offlineResult)) {
+                return $offlineResult;
             }
         }
 
@@ -118,6 +125,50 @@ class SpeedtestService
         }
 
         $country = $data['country'] ?? null;
+        $distance = null;
+
+        if (isset($_GET['distance']) && ($_GET['distance'] === 'mi' || $_GET['distance'] === 'km') && !empty($data['loc']) && is_string($data['loc'])) {
+            $unit = $_GET['distance'];
+            $clientLoc = $data['loc'];
+            $serverLoc = null;
+            $cacheFile = __DIR__ . '/../Config/serverLocation.php';
+
+            if (file_exists($cacheFile) && is_readable($cacheFile)) {
+                require $cacheFile;
+            }
+
+            if (!is_string($serverLoc) || empty($serverLoc)) {
+                $sjson = @file_get_contents('https://ipinfo.io/json?token=' . $apiKey, false, $context);
+                if (is_string($sjson)) {
+                    $sdata = json_decode($sjson, true);
+                    if (is_array($sdata) && !empty($sdata['loc']) && is_string($sdata['loc'])) {
+                        $serverLoc = $sdata['loc'];
+                        @file_put_contents($cacheFile, "<?php\n\n\$serverLoc = '" . addslashes($serverLoc) . "';\n");
+                    }
+                }
+            }
+
+            if (is_string($serverLoc) && !empty($serverLoc)) {
+                list($clientLatitude, $clientLongitude) = explode(',', $clientLoc);
+                list($serverLatitude, $serverLongitude) = explode(',', $serverLoc);
+                $rad = M_PI / 180;
+                $dist = acos(sin($clientLatitude * $rad) * sin($serverLatitude * $rad) + cos($clientLatitude * $rad) * cos($serverLatitude * $rad) * cos(($clientLongitude - $serverLongitude) * $rad)) / $rad * 60 * 1.853;
+                if ($unit === 'mi') {
+                    $dist /= 1.609344;
+                    $dist = round($dist, -1);
+                    if ($dist < 15) {
+                        $dist = '<15';
+                    }
+                    $distance = $dist . ' mi';
+                } elseif ($unit === 'km') {
+                    $dist = round($dist, -1);
+                    if ($dist < 20) {
+                        $dist = '<20';
+                    }
+                    $distance = $dist . ' km';
+                }
+            }
+        }
 
         $processedString = $ip;
         if (!empty($isp)) {
@@ -126,10 +177,61 @@ class SpeedtestService
         if (!empty($country)) {
             $processedString .= ', ' . $country;
         }
+        if (!empty($distance)) {
+            $processedString .= ' (' . $distance . ')';
+        }
 
         return [
             'processedString' => $processedString,
             'rawIspInfo' => $data
         ];
+    }
+
+    /**
+     * Get offline GeoIP info.
+     */
+    private function getIspInfo_ipinfoOfflineDb(string $ip): ?array
+    {
+        $config = require __DIR__ . '/../Config/config.php';
+        $dbFile = $config['ipinfo']['offline_db'] ?? (__DIR__ . '/../Config/country_asn.mmdb');
+        $pharFile = __DIR__ . '/../Config/geoip2.phar';
+
+        if (PHP_VERSION_ID < 80100 || !file_exists($dbFile) || !is_readable($dbFile)) {
+            return null;
+        }
+
+        if (file_exists($pharFile) && is_readable($pharFile)) {
+            require_once $pharFile;
+        }
+
+        if (!class_exists('MaxMind\Db\Reader')) {
+            return null;
+        }
+
+        try {
+            $reader = new \MaxMind\Db\Reader($dbFile);
+            $data = $reader->get($ip);
+            if (!is_array($data)) {
+                return null;
+            }
+
+            $asName = $data['as_name'] ?? '';
+            $countryName = $data['country_name'] ?? '';
+            $processedString = $ip;
+
+            if ($asName !== '') {
+                $processedString .= ' - ' . $asName;
+            }
+            if ($countryName !== '') {
+                $processedString .= ', ' . $countryName;
+            }
+
+            return [
+                'processedString' => $processedString,
+                'rawIspInfo' => $data
+            ];
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

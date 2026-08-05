@@ -36,3 +36,9 @@ Desktop.ini
 # --- App Specific / Logs ---
 *.log
 /public/storage/
+
+# --- GeoIP & Cached server locations ---
+/app/Config/country_asn.mmdb
+/app/Config/geoip2.phar
+/app/Config/serverLocation.php
+
