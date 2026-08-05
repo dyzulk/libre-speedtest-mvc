@@ -1,0 +1,9 @@
+services:
+  speedtest:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: libre-speedtest-openresty
+    ports:
+      - "8080:8080"
+    restart: always

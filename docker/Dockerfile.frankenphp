@@ -1,0 +1,33 @@
+FROM dunglas/frankenphp:latest-php8.3-alpine
+
+# Install standard PHP extensions needed for the database/telemetry
+RUN apk add --no-cache \
+    git \
+    unzip
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN install-php-extensions gd pdo pdo_mysql pdo_pgsql pdo_sqlite pgsql
+
+# Install custom PHP ini (upload limits + disable output buffering)
+COPY docker/php.ini ${PHP_INI_DIR}/conf.d/99-speedtest.ini
+
+# Copy Composer from official image
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory to FrankenPHP's default /app
+WORKDIR /app
+
+# Copy project files
+COPY . /app
+
+# Run Composer installation
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy the custom Caddyfile
+COPY docker/Caddyfile /etc/caddy/Caddyfile
+
+# Expose port
+EXPOSE 8080
+
+# FrankenPHP inherits the default entrypoint which runs Caddy
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]

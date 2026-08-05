@@ -1,0 +1,27 @@
+{
+    # Enable FrankenPHP
+    frankenphp
+    
+    # Disable admin API endpoint inside container
+    admin off
+}
+
+:8080 {
+    root * public/
+
+    # Disable compression for octet-streams to keep speedtest results accurate
+    encode gzip {
+        exclude application/octet-stream
+    }
+
+    route {
+        # Serve static assets directly
+        file_server
+
+        # Route requests to index.php for the MVC router
+        try_files {path} {path}/ /index.php?{query}
+        
+        # Execute PHP script
+        frankenphp
+    }
+}
