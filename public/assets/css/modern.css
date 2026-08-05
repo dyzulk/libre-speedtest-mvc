@@ -855,30 +855,6 @@ dialog img#results {
     }
 }
 
-@media all and (prefers-color-scheme: dark) {
-    html,
-    body {
-        background: #202020;
-        color: #F4F4F4;
-        color-scheme: dark;
-    }
-
-    main > h1 {
-        color: #E0E0E0;
-    }
-
-    main a {
-        color: #9090FF;
-    }
-
-    dialog#privacy {
-        background: #000000;
-    }
-
-    img#results-img {
-        filter: invert(1);
-    }
-}
 
 /* Footer layout override for modern theme */
 footer {

@@ -28,12 +28,16 @@ trait ViewRenderer
         require $viewFile;
         $content = ob_get_clean();
 
-        // Include the master layout
-        $layoutFile = __DIR__ . '/../Views/layout/main.php';
-        if (file_exists($layoutFile)) {
-            require $layoutFile;
-        } else {
+        // Include the master layout or output directly if no_layout is specified
+        if (isset($no_layout) && $no_layout) {
             echo $content;
+        } else {
+            $layoutFile = __DIR__ . '/../Views/layout/main.php';
+            if (file_exists($layoutFile)) {
+                require $layoutFile;
+            } else {
+                echo $content;
+            }
         }
     }
 

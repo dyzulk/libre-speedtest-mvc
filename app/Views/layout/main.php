@@ -72,6 +72,8 @@
             color: var(--text-primary);
         }
 
+
+
         main {
             flex: 1;
             width: 100%;
