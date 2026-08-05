@@ -1,1 +1,38 @@
+# --- Environment / Secrets ---
 .env
+.env.backup
+.env.local
+.env.*.local
+*.env
+
+# --- Dependencies ---
+/vendor/
+/node_modules/
+/npm-debug.log*
+/yarn-error.log*
+
+# --- Databases ---
+/*.sqlite
+/*.db
+/*.db-journal
+/*.db-wal
+
+# --- IDEs / Editors ---
+/.idea/
+/.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*~
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- App Specific / Logs ---
+*.log
+/public/storage/
