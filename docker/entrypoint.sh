@@ -3,7 +3,13 @@ set -e
 
 # Start PHP-FPM in background
 echo "Starting PHP-FPM..."
-php-fpm -D || php-fpm83 -D || php-fpm82 -D || php-fpm81 -D || php-fpm74 -D || php-fpm -D
+FPM_BIN=$(which php-fpm || find /usr/sbin -name "php-fpm*" | head -n 1)
+if [ -n "$FPM_BIN" ]; then
+  $FPM_BIN -D
+else
+  echo "ERROR: PHP-FPM not found!" >&2
+  exit 1
+fi
 
 # Start OpenResty in foreground
 echo "Starting OpenResty..."
