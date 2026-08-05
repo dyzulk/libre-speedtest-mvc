@@ -1,0 +1,510 @@
+/**
+ * Vercel-Inspired Admin/Dashboard Stylesheet
+ * Fully custom vanilla CSS (no Tailwind) for a premium dark-mode theme.
+ */
+
+:root {
+    --bg-admin: #000000;
+    --card-bg-admin: #0a0a0a;
+    --border-admin: #1f1f1f;
+    --border-hover-admin: #333333;
+    
+    --text-primary-admin: #ffffff;
+    --text-secondary-admin: #8f8f8f;
+    --text-muted-admin: #666666;
+    
+    --success-admin: #0070f3;
+    --error-admin: #ff0000;
+    --warning-admin: #f5a623;
+    
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+body.admin-body {
+    background-color: var(--bg-admin) !important;
+    background-image: none !important;
+    color: var(--text-primary-admin) !important;
+    font-family: var(--font-sans) !important;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header & Navigation */
+header.admin-header {
+    background-color: var(--bg-admin);
+    border-bottom: 1px solid var(--border-admin);
+    width: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.header-container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-link {
+    color: var(--text-primary-admin);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s ease;
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+}
+
+.logo-symbol {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid var(--text-primary-admin);
+    display: inline-block;
+}
+
+nav.admin-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+nav.admin-nav a {
+    color: var(--text-secondary-admin);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+nav.admin-nav a:hover,
+nav.admin-nav a.active {
+    color: var(--text-primary-admin);
+}
+
+nav.admin-nav .btn-logout {
+    border: 1px solid var(--border-admin);
+    background: transparent;
+    color: var(--text-secondary-admin);
+    padding: 0.35rem 0.75rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+nav.admin-nav .btn-logout:hover {
+    color: var(--text-primary-admin);
+    border-color: var(--border-hover-admin);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Main Container */
+main.admin-main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* Page Titles */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    color: var(--text-primary-admin);
+}
+
+.page-header p {
+    font-size: 0.9rem;
+    color: var(--text-secondary-admin);
+    margin: 0;
+}
+
+/* Vercel Stats Summary Grid */
+.stats-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.summary-card {
+    background: var(--card-bg-admin);
+    border: 1px solid var(--border-admin);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: border-color 0.2s ease;
+}
+
+.summary-card:hover {
+    border-color: var(--border-hover-admin);
+}
+
+.summary-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary-admin);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}
+
+.summary-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary-admin);
+}
+
+.summary-value span {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-secondary-admin);
+    margin-left: 0.15rem;
+}
+
+/* Glass/Normal Cards */
+.vercel-card {
+    background: var(--card-bg-admin);
+    border: 1px solid var(--border-admin);
+    border-radius: 8px;
+    padding: 1.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+}
+
+/* Vercel Table */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-admin);
+    border-radius: 8px;
+    background: var(--card-bg-admin);
+}
+
+table.vercel-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+table.vercel-table th {
+    background: #050505;
+    padding: 0.85rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted-admin);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-admin);
+}
+
+table.vercel-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-admin);
+    color: var(--text-primary-admin);
+    vertical-align: middle;
+}
+
+table.vercel-table tr:last-child td {
+    border-bottom: none;
+}
+
+table.vercel-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Form Controls & Inputs */
+.vercel-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.vercel-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.vercel-form-group label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary-admin);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.vercel-input {
+    background: #000000;
+    border: 1px solid var(--border-admin);
+    color: var(--text-primary-admin);
+    padding: 0.65rem 0.85rem;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.vercel-input:focus {
+    outline: none;
+    border-color: #555555;
+    box-shadow: 0 0 0 1px #555555;
+}
+
+.vercel-btn {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.vercel-btn:hover {
+    background: #000000;
+    color: #ffffff;
+}
+
+.vercel-btn-secondary {
+    background: transparent;
+    color: var(--text-secondary-admin);
+    border: 1px solid var(--border-admin);
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.vercel-btn-secondary:hover {
+    color: var(--text-primary-admin);
+    border-color: var(--border-hover-admin);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Badges & Tags */
+.vercel-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.15s ease;
+}
+
+.vercel-badge-id {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-admin);
+    color: var(--text-primary-admin);
+}
+
+.vercel-badge-id:hover {
+    border-color: #666666;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.vercel-badge-danger {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #ff3333;
+}
+
+.vercel-badge-danger:hover {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+/* Alert box */
+.vercel-alert {
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.15);
+    color: #ff3333;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Centered Layout (For Login/Error) */
+.centered-container {
+    max-width: 400px;
+    width: 100%;
+    margin: 5rem auto;
+}
+
+.centered-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.vercel-logo-large {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 35px solid var(--text-primary-admin);
+}
+
+.centered-title-wrapper {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.centered-title-wrapper h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.centered-title-wrapper p {
+    font-size: 0.85rem;
+    color: var(--text-secondary-admin);
+    margin: 0;
+}
+
+/* Result metrics spacing and grids */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.metric-panel {
+    background: #050505;
+    border: 1px solid var(--border-admin);
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.metric-panel-full {
+    grid-column: span 2;
+}
+
+.metric-panel-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+}
+
+.metric-panel-row span {
+    font-size: 0.8rem;
+    color: var(--text-secondary-admin);
+}
+
+.metric-panel-row strong {
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--text-primary-admin);
+}
+
+/* Footer style */
+footer.admin-footer {
+    width: 100%;
+    border-top: 1px solid var(--border-admin);
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted-admin);
+    font-size: 0.75rem;
+}
+
+.footer-container p {
+    margin: 0;
+}
+
+/* Monospace Utilities */
+.font-mono {
+    font-family: var(--font-mono) !important;
+}
+
+/* Text alignment */
+.text-center {
+    text-align: center;
+}
+
+.text-secondary {
+    color: var(--text-secondary-admin) !important;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* Code layout block */
+.code-block {
+    background: #050505;
+    border: 1px solid var(--border-admin);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary-admin);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    text-align: left;
+}

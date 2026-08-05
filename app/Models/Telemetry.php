@@ -84,4 +84,39 @@ class Telemetry
         $stmt = $db->query('SELECT * FROM speedtest_users ORDER BY timestamp DESC LIMIT 100');
         return $stmt->fetchAll() ?: [];
     }
+
+    /**
+     * Get aggregate stats for summary cards.
+     *
+     * @return array
+     */
+    public static function getSummaryStats(): array
+    {
+        $db = Database::getConnection();
+        if (!$db) {
+            return [
+                'total_tests' => 0,
+                'avg_dl' => 0.0,
+                'avg_ul' => 0.0,
+                'avg_ping' => 0.0
+            ];
+        }
+
+        $stmt = $db->query('
+            SELECT 
+                COUNT(*) as total_tests,
+                AVG(CAST(dl AS REAL)) as avg_dl,
+                AVG(CAST(ul AS REAL)) as avg_ul,
+                AVG(CAST(ping AS REAL)) as avg_ping
+            FROM speedtest_users
+        ');
+        
+        $row = $stmt->fetch();
+        return [
+            'total_tests' => (int)($row['total_tests'] ?? 0),
+            'avg_dl' => round((float)($row['avg_dl'] ?? 0), 2),
+            'avg_ul' => round((float)($row['avg_ul'] ?? 0), 2),
+            'avg_ping' => round((float)($row['avg_ping'] ?? 0), 1),
+        ];
+    }
 }

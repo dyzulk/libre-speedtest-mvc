@@ -1,123 +1,72 @@
-<style>
-    .stats-card {
-        width: 100%;
-        max-width: 900px;
-    }
+<div class="page-header">
+    <h1>Telemetry Dashboard</h1>
+    <p>Real-time network speed telemetry statistics and recent test runs.</p>
+</div>
 
-    .stats-header {
-        margin-bottom: 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .stats-header h1 {
-        font-size: 2rem;
-        background: var(--gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-    }
-
-    .stats-header p {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-    }
-
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-        font-size: 0.9rem;
-    }
-
-    th {
-        color: var(--text-secondary);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    td {
-        padding: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        color: var(--text-primary);
-    }
-
-    tr:hover td {
-        background: rgba(255, 255, 255, 0.01);
-    }
-
-    .badge {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--border-color);
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        color: var(--accent-secondary);
-        text-decoration: none;
-    }
-
-    .badge:hover {
-        background: var(--gradient);
-        color: white;
-        border-color: transparent;
-    }
-</style>
-
-<div class="glass-card stats-card">
-    <div class="stats-header">
-        <div>
-            <h1>Telemetry Logs</h1>
-            <p>List of recent speedtest executions</p>
+<?php if (isset($summary)): ?>
+    <div class="stats-summary-grid">
+        <div class="summary-card">
+            <span class="summary-label">Total Runs</span>
+            <span class="summary-value"><?php echo number_format($summary['total_tests']); ?></span>
         </div>
-        <div>
-            <a href="/logout" class="badge" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #ef4444;">
-                Logout
-            </a>
+        <div class="summary-card">
+            <span class="summary-label">Avg Download</span>
+            <span class="summary-value"><?php echo number_format($summary['avg_dl'], 2); ?> <span>Mbps</span></span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Avg Upload</span>
+            <span class="summary-value"><?php echo number_format($summary['avg_ul'], 2); ?> <span>Mbps</span></span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Avg Latency</span>
+            <span class="summary-value"><?php echo number_format($summary['avg_ping'], 1); ?> <span>ms</span></span>
         </div>
     </div>
+<?php endif; ?>
 
-    <div class="table-container">
-        <table>
+<div class="vercel-card" style="padding: 0;">
+    <div class="table-wrapper" style="border: none;">
+        <table class="vercel-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Timestamp</th>
+                    <th style="width: 80px;">ID</th>
+                    <th style="width: 180px;">Timestamp</th>
                     <th>Client IP</th>
-                    <th>Download</th>
-                    <th>Upload</th>
-                    <th>Ping</th>
+                    <th style="text-align: right; width: 120px;">Download</th>
+                    <th style="text-align: right; width: 120px;">Upload</th>
+                    <th style="text-align: right; width: 100px;">Ping</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($results)): ?>
                     <tr>
-                        <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No speedtest records found. Run some tests first!</td>
+                        <td colspan="6" class="text-center text-secondary" style="padding: 3rem 1rem;">
+                            No speedtest records found. Run some tests first!
+                        </td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($results as $row): ?>
                         <tr>
                             <td>
-                                <a href="/results/<?php echo htmlspecialchars($row['id']); ?>" class="badge">
+                                <a href="/results/<?php echo htmlspecialchars($row['id']); ?>" class="vercel-badge vercel-badge-id">
                                     #<?php echo htmlspecialchars($row['id']); ?>
                                 </a>
                             </td>
-                            <td style="white-space: nowrap; color: var(--text-secondary);"><?php echo htmlspecialchars($row['timestamp']); ?></td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <td class="font-mono text-secondary" style="white-space: nowrap;">
+                                <?php echo htmlspecialchars($row['timestamp']); ?>
+                            </td>
+                            <td class="font-mono" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 <?php echo htmlspecialchars($row['ip']); ?>
                             </td>
-                            <td><strong><?php echo htmlspecialchars($row['dl']); ?></strong> Mbps</td>
-                            <td><strong><?php echo htmlspecialchars($row['ul']); ?></strong> Mbps</td>
-                            <td><strong><?php echo htmlspecialchars($row['ping']); ?></strong> ms</td>
+                            <td class="font-mono" style="text-align: right; font-weight: 600;">
+                                <?php echo htmlspecialchars($row['dl']); ?> <span style="font-weight: 400; color: var(--text-muted-admin); font-size: 0.8rem;">Mbps</span>
+                            </td>
+                            <td class="font-mono" style="text-align: right; font-weight: 600;">
+                                <?php echo htmlspecialchars($row['ul']); ?> <span style="font-weight: 400; color: var(--text-muted-admin); font-size: 0.8rem;">Mbps</span>
+                            </td>
+                            <td class="font-mono" style="text-align: right; font-weight: 600;">
+                                <?php echo htmlspecialchars($row['ping']); ?> <span style="font-weight: 400; color: var(--text-muted-admin); font-size: 0.8rem;">ms</span>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

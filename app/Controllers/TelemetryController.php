@@ -96,9 +96,11 @@ class TelemetryController extends Controller
     public function stats(): void
     {
         $results = Telemetry::getLatest();
+        $summary = Telemetry::getSummaryStats();
         $this->render('stats', [
             'title' => 'Telemetry Logs',
-            'results' => $results
+            'results' => $results,
+            'summary' => $summary
         ]);
     }
 }
