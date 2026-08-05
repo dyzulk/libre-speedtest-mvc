@@ -1,13 +1,13 @@
 # Multi-Database Test Profiles
 #
 # Usage:
-#   docker compose -f docker/docker-compose.db-test.yml --profile mysql up -d
-#   docker compose -f docker/docker-compose.db-test.yml --profile mariadb up -d
-#   docker compose -f docker/docker-compose.db-test.yml --profile postgres up -d
-#   docker compose -f docker/docker-compose.db-test.yml --profile mssql up -d
+#   docker compose -f docker-compose.db-test.yml --profile mysql up -d
+#   docker compose -f docker-compose.db-test.yml --profile mariadb up -d
+#   docker compose -f docker-compose.db-test.yml --profile postgres up -d
+#   docker compose -f docker-compose.db-test.yml --profile mssql up -d
 #
 # Stop:
-#   docker compose -f docker/docker-compose.db-test.yml --profile <name> down -v
+#   docker compose -f docker-compose.db-test.yml --profile <name> down -v
 
 services:
   # ===== MySQL =====
@@ -30,7 +30,7 @@ services:
 
   speedtest-mysql:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
     profiles: [mysql]
     container_name: speedtest-app-mysql
@@ -82,7 +82,7 @@ services:
 
   speedtest-mariadb:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
     profiles: [mariadb]
     container_name: speedtest-app-mariadb
@@ -133,7 +133,7 @@ services:
 
   speedtest-postgres:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
     profiles: [postgres]
     container_name: speedtest-app-postgres
@@ -184,7 +184,7 @@ services:
 
   speedtest-mssql:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
     profiles: [mssql]
     container_name: speedtest-app-mssql
